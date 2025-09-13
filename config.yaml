@@ -1,0 +1,46 @@
+# Regions (country codes). Supported out-of-the-box: US, GB, CA, AU, IN, FR, DE, ES, IT, BR
+regions:
+  - FR
+  - US
+
+# Sectors/topics: each with a display name and one or more search queries
+# Google News will search for each query within the last day.
+sectors:
+  - name: Tech
+    queries:
+      - intelligence artificielle
+      - "AI startups"
+      - "cloud computing"
+  - name: Sports Business
+    queries:
+      - "sports sponsorship"
+      - "sports media rights"
+  - name: Finance
+    queries:
+      - "marchés financiers"
+      - "venture capital"
+
+# Optional global keyword filters applied to title+summary+source+link text
+keywords_include: []
+keywords_exclude:
+  - rumor
+  - gossip
+
+# Presentation
+group_by: sector    # sector | region | none
+subject: "Your Daily News Digest"
+
+# Result limits
+max_items: 40
+days_window: 1
+
+# Email config
+# Prefer to set these via environment variables in CI:
+#   SMTP_SERVER, SMTP_PORT, SMTP_USER, SMTP_PASS, FROM_EMAIL, TO_EMAIL
+email:
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 465
+  # smtp_user: ""
+  # smtp_pass: ""
+  # from_email: ""
+  # to_email: ""

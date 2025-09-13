@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ title }}</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:#111; }
+      .container { max-width: 760px; margin: 0 auto; padding: 16px; }
+      h1 { font-size: 20px; margin-bottom: 8px; }
+      h2 { font-size: 16px; margin-top: 24px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+      .item { margin: 12px 0; }
+      .meta { color:#666; font-size: 12px; }
+      a { color: #0a58ca; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .footer { color:#666; font-size: 12px; margin-top: 24px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>{{ title }}</h1>
+      <div class="meta">Generated at {{ generated_at }}</div>
+
+      {% if group_by == "sector" %}
+        {% set groups = {} %}
+        {% for it in items %}
+          {% set _ = groups.setdefault(it.sector, []).append(it) %}
+        {% endfor %}
+        {% for sect, arr in groups.items() %}
+          <h2>{{ sect }}</h2>
+          {% for it in arr %}
+            <div class="item">
+              <div><a href="{{ it.link }}" target="_blank" rel="noopener noreferrer">{{ it.title }}</a></div>
+              <div class="meta">{{ it.source or "" }}{% if it.source %} · {% endif %}{{ it.region }}{% if it.published %} · {{ it.published }}{% endif %}</div>
+              {% if it.summary %}<div>{{ it.summary|safe }}</div>{% endif %}
+            </div>
+          {% endfor %}
+        {% endfor %}
+      {% elif group_by == "region" %}
+        {% set groups = {} %}
+        {% for it in items %}
+          {% set _ = groups.setdefault(it.region, []).append(it) %}
+        {% endfor %}
+        {% for reg, arr in groups.items() %}
+          <h2>{{ reg }}</h2>
+          {% for it in arr %}
+            <div class="item">
+              <div><a href="{{ it.link }}" target="_blank" rel="noopener noreferrer">{{ it.title }}</a></div>
+              <div class="meta">{{ it.source or "" }}{% if it.source %} · {% endif %}{{ it.sector }}{% if it.published %} · {{ it.published }}{% endif %}</div>
+              {% if it.summary %}<div>{{ it.summary|safe }}</div>{% endif %}
+            </div>
+          {% endfor %}
+        {% endfor %}
+      {% else %}
+        {% for it in items %}
+          <div class="item">
+            <div><a href="{{ it.link }}" target="_blank" rel="noopener noreferrer">{{ it.title }}</a></div>
+            <div class="meta">{{ it.source or "" }}{% if it.source %} · {% endif %}{{ it.region }} · {{ it.sector }}{% if it.published %} · {{ it.published }}{% endif %}</div>
+            {% if it.summary %}<div>{{ it.summary|safe }}</div>{% endif %}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <div class="footer">
+        You are receiving this because you configured a personal daily news agent. Update preferences in config.yaml.
+      </div>
+    </div>
+  </body>
+</html>
